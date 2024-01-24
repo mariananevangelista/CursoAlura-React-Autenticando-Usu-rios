@@ -1,15 +1,15 @@
-.corpoModalCadastro {
+.corpoModalLogin {
     display: flex;
     align-items: center;
     padding-top: 32px;
 }
 
-.corpoModalCadastro form {
+.corpoModalLogin form {
     width: 500px;
     max-width: 100%;
 }
 
-.corpoModalCadastro footer {
+.corpoModalLogin footer {
     margin-top: 48px;
     text-align: center;
 }

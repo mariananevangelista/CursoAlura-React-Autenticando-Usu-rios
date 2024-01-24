@@ -4,8 +4,14 @@ import { useState } from "react"
 import imagemPrincipal from './assets/login.png'
 
 import './ModalCadastroUsuario.css'
+import api from "../../api"
 
-const ModalCadastroUsuario = () => {
+interface PropsModalCadastroUsuario{ //typescript
+    aberta: boolean
+    aoFechar: () => void
+}
+
+const ModalCadastroUsuario = ({aberta, aoFechar}:PropsModalCadastroUsuario) => {
 
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
@@ -25,14 +31,30 @@ const ModalCadastroUsuario = () => {
             cep,
             complemento
         }
-        console.log(usuario)
-        alert('Usuário foi cadastrado com sucesso!')
+
+        //cadastro do usuário requisição post('url', usuario a ser cadastrado)
+        api.post('public/registrar', usuario) //promise, pode dar certo ou errado
+            .then(() => {
+                alert('Usuário foi cadastrado com sucesso!')
+                setNome('')
+                setEmail('')
+                setEndereco('')
+                setComplemento('')
+                setCep('')
+                setSenha('')
+                setSenhaConfirmada('')
+                aoFechar()
+            }) //se der certo then(() => {}) faz um alerta e limpa os inputs
+            .catch(() => {
+                alert('Ops!Alguma coisa deu errado')
+            }) //se der errado cath(() => {})
+        
     }
 
     return (<AbModal 
         titulo="Cadastrar" 
-        aberta={true}
-        aoFechar={() => console.log('fecha ai')}    
+        aberta={aberta}
+        aoFechar={aoFechar}    
     >
         <section className="corpoModalCadastro">
             <figure>
@@ -77,9 +99,9 @@ const ModalCadastroUsuario = () => {
                     onChange={setSenhaConfirmada}
                     type="password"
                 />
-                <div className="acoes">
+                <footer className="acoes">
                     <AbBotao texto="Cadastrar"/>
-                </div>
+                </footer>
             </form>
         </section>
     </AbModal>)
